@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+#from mpl_toolkits.mplot3d import Axes3D
 
 # Parameters for Lorenz-63
 sigma = 10.0
@@ -14,7 +14,7 @@ def lorenz(state):
     return np.array([sigma * (y - x), x * (rho - z) - y, x * y - beta * z])
 
 # Exercise 1: integrate with modified Euler (midpoint) and record every 5 steps
-def integrate_lorenz_midpoint(x0, h=0.01, t_end=200.0, record_every=5):
+def integrate_lorenz_midpoint(x0, h=0.01, t_end=200.0, record_every=3):
     n_steps = int(t_end / h)
     m = n_steps // record_every + 1
     traj = np.zeros((3, m))
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     ax.set_zlabel('z')
     plt.tight_layout()
     plt.show()
-
+    
     # Generate and save observations
     obs_times, obs_values = make_observations(times, traj)
     data_obs = np.vstack((obs_times, obs_values))
@@ -89,11 +89,11 @@ if __name__ == '__main__':
     plt.figure(figsize=(8, 4))
     # Scatter only first 4000 points (0 ≤ time ≤ 10)
     n_plot = 4000
-    plt.scatter(obs_times, obs_values, s=5)
+    plt.scatter(obs_times, obs_values, marker = 'x',  s=10)
     plt.title('observed values')
     plt.xlabel('time')
     plt.ylabel('x-coordinate')
-    plt.xlim(0, 10)
+    plt.xlim(50, 75)
     plt.grid(True)
     plt.tight_layout()
     plt.show()
@@ -101,5 +101,6 @@ if __name__ == '__main__':
     # Compute RMSE for lead times of 1 and 3 output intervals
     rmse_1 = forecast_rmse(obs_values, lead_steps=1)
     rmse_3 = forecast_rmse(obs_values, lead_steps=3)
+
     print(f'RMSE for Δt = 0.05: {rmse_1:.6f}')
     print(f'RMSE for 3Δt = 0.15: {rmse_3:.6f}')
