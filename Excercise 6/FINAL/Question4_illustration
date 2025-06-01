@@ -1,0 +1,35 @@
+"""This code illustrates the solution of the ODE dr/dt = r (lambda + alpha * r^2) using scipy's solve_ivp.
+    It explains what how would the function r behave for different values of lambda and alpha and initial r.
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import solve_ivp
+
+# Parameters
+lambda_val = 1 # use for any lambda value
+alpha = -1   # test for alpha value 
+r0 = 0.2  # initial r value
+
+
+t_span = (0, 10)
+t_eval = np.linspace(*t_span, 300)
+
+# Define dr/dt = r (lambda + alpha * r^2)
+def dr_dt(t, r):
+    return r * (lambda_val + alpha * r**2)
+
+# Solve the ODE
+solution = solve_ivp(dr_dt, t_span, [r0], t_eval=t_eval)
+
+# Plotting
+plt.figure(figsize=(8, 5))
+plt.plot(solution.t, solution.y[0], label=fr'$\lambda = {lambda_val}$, $\alpha = {alpha}$', color='darkblue')
+plt.axhline(0, color='gray', linestyle='--')
+plt.xlabel('Time $t$')
+plt.ylabel('$r(t)$')
+plt.title(r'Evolution of $r(t)$ for $\dot{r} = r(\lambda + \alpha r^2)$')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
